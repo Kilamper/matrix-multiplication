@@ -23,51 +23,29 @@ OpenMP permite la programación paralela en sistemas multiprocesador de memoria 
 
 Después de haber completado estos pasos, el entorno ya está preparado para ejecutar la multiplicación de matrices de forma paralela, lo único que haría falta sería importar la librería OpenMP (#include <omp.h>). Por lo que ya se puede comenzar con la evaluación de prestaciones mediante el uso de los contadores hardware proporcionados por OpenMP. El PC utilizado para la ejecución del programa tiene de procesador un Intel Core i5 13500 de 6 núcleos P-Core (Performance Core) y 8 núcleos E-Core (Efficient Core), que en total conforman 14 núcleos y 20 hilos.
 
-|Ejecución|Hilos|Dimensiones|Tiempo total (ms)|Speed-Up|Eficiencia Paralelismo|
-|:----|:----|:----|:----|:----|:----|
-|Secuencial|1|1000 x 1000|1975|1|100%|
-| |1|2000 x 2000|20682|1|100%|
-| |1|3000 x 3000|94206|1|100%|
-|Paralela (Multihilo)|2|1000 x 1000|1054|1,87|93,69%|
-| |2|2000 x 2000|10595|1,95|97,60%|
-| |2|3000 x 3000|49318|1,91|95,51%|
-|Paralela (Multihilo)|4|1000 x 1000|574|3,44|86,02%|
-| |4|2000 x 2000|5649|3,66|91,53%|
-| |4|3000 x 3000|25144|3,75|93,67%|
-|Paralela (Multihilo)|8|1000 x 1000|377|5,24|65,48%|
-| |8|2000 x 2000|3489|5,93|74,10%|
-| |8|3000 x 3000|14852|6,34|79,29%|
-|Paralela (Multihilo)|16|1000 x 1000|250|7,9|49,38%|
-| |16|2000 x 2000|2340|8,84|55,24%|
-| |16|3000 x 3000|9134|10,31|64,46%|
-|Paralela (Multihilo)|20|1000 x 1000|220|8,98|44,89%|
-| |20|2000 x 2000|2052|10,08|50,39%|
-| |20|3000 x 3000|7930|11,88|59,40%|
-
-Ejecución	Hilos	Dimensiones	Tiempo total (ms)	Speed-Up	Eficiencia Paralelismo
-Secuencial	1	1000 x 1000	1975	1	100%
-	1	2000 x 2000	20682	1	100%
-	1	3000 x 3000	94206	1	100%
-Paralela (Multihilo)	2	1000 x 1000	1054	1,87	93,69%
-	2	2000 x 2000	10595	1,95	97,60%
-	2	3000 x 3000	49318	1,91	95,51%
-Paralela (Multihilo)	4	1000 x 1000	574	3,44	86,02%
-	4	2000 x 2000	5649	3,66	91,53%
-	4	3000 x 3000	25144	3,75	93,67%
-Paralela (Multihilo)	8	1000 x 1000	377	5,24	65,48%
-	8	2000 x 2000	3489	5,93	74,10%
-	8	3000 x 3000	14852	6,34	79,29%
-Paralela (Multihilo)	16	1000 x 1000	250	7,9	49,38%
-	16	2000 x 2000	2340	8,84	55,24%
-	16	3000 x 3000	9134	10,31	64,46%
-Paralela (Multihilo)	20	1000 x 1000	220	8,98	44,89%
-	20	2000 x 2000	2052	10,08	50,39%
-	20	3000 x 3000	7930	11,88	59,40%
 ![image](https://github.com/Kilamper/matrix-multiplication/assets/73082382/9e7cc5d0-2f67-46a4-aba5-c02e014953a6)
-
 
 La tabla anterior muestro los resultados obtenidos de la ejecución del programa de multiplicación de matrices usando tres tamaños distintos de matrices (1000 x 1000, 2000 x 2000 y 3000 x 3000) y alternando el número de hilos empleados en el cálculo del resultado. En esta tabla también se pueden observar el Speed-Up de cada una de las ejecuciones paralelas con respecto a la ejecución secuencial inicial, así como la eficiencia del paralelismo (100% * Speed-Up/Nº hilos).
 
+![image](https://github.com/Kilamper/matrix-multiplication/assets/73082382/99f63748-8f8c-4cfe-8508-839c611c6081)
+
+Como se puede ver, al ir cambiando el tamaño de las matrices de 1000 x 1000 a 2000 x 2000 y a 3000 x 3000, se observa un vertiginozo aumento del tiempo total. En cambio, al aumentar el número de hilos, el tiempo total disminuye de manera considerable, por lo que el tiempo de ejecución es inversamente proporcional al número de hilos y directamente proporcional al tamaño de las matrices. Esto se ve reflejado en que si duplicamos el número de hilos de 1 a 2 o de 8 a 16, el tiempo de ejecución total resulta ser aproximadamente la mitad, pasando de 1975 ms a 1054 y de 377 ms a 250, respectivamente, tanto en el caso de usar matrices de tamaño 1000 x 1000 como en este ejemplo, como al usar matrices de otras dimensiones.
+
+![image](https://github.com/Kilamper/matrix-multiplication/assets/73082382/bdaf81c2-f562-4637-9ca0-85edb1973c2f)
+
+La función “inicializar_matrices()” inicializa las matrices A y B con el valor de la columna a la que pertenece cada uno de sus elementos y la matriz resultado C con todos sus elementos a 0.
+
+![image](https://github.com/Kilamper/matrix-multiplication/assets/73082382/878f585b-4970-4b1b-a795-4e85b4094e7a)
+
+La función “multiplicar_matrices(A, B, C)” se encarga de multiplicar las matrices A y B y guardar el resultado en la matriz C. Se utiliza la sentencia #pragma omp parallel for para paralelizar el bucle que realiza la operación y dividirlo entre el número de hilos seleccionado para la ejecución.
+
+![image](https://github.com/Kilamper/matrix-multiplication/assets/73082382/23f6a9ef-b61c-48e4-967d-42b5f9601485)
+
+El propósito de la función “imprimir_matrices()” es el de imprimir las matrices A y B, y la matriz resultado C. Se ha implementado una condición para imprimir solo las dos primeras filas de las matrices cuando el tamaño de estas es muy grande.
+
+![image](https://github.com/Kilamper/matrix-multiplication/assets/73082382/48ac1730-69e3-4edf-96f2-a3cbbd27084d)
+
+En el programa principal, “main()”, se selecciona el número de hilos deseado por medio de la variable “threads” y la función “omp_set_num_threads()”. Además, a partir de un contador hardware perteneciente a la librería OpenMP se realiza un conteo del tiempo de ejecución de la operación.
 
 ## Integración con la API
 
