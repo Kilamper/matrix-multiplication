@@ -25,27 +25,49 @@ Después de haber completado estos pasos, el entorno ya está preparado para eje
 
 |Ejecución|Hilos|Dimensiones|Tiempo total (ms)|Speed-Up|Eficiencia Paralelismo|
 |:----|:----|:----|:----|:----|:----|
-| |1|1000 x 1000|1975|1|100%|
-|Secuencial|1|2000 x 2000|20682|1|100%|
+|Secuencial|1|1000 x 1000|1975|1|100%|
+| |1|2000 x 2000|20682|1|100%|
 | |1|3000 x 3000|94206|1|100%|
-| |2|1000 x 1000|1054|1,87|93,69%|
-|Paralela (Multihilo)|2|2000 x 2000|10595|1,95|97,60%|
+|Paralela (Multihilo)|2|1000 x 1000|1054|1,87|93,69%|
+| |2|2000 x 2000|10595|1,95|97,60%|
 | |2|3000 x 3000|49318|1,91|95,51%|
-| |4|1000 x 1000|574|3,44|86,02%|
-|Paralela (Multihilo)|4|2000 x 2000|5649|3,66|91,53%|
+|Paralela (Multihilo)|4|1000 x 1000|574|3,44|86,02%|
+| |4|2000 x 2000|5649|3,66|91,53%|
 | |4|3000 x 3000|25144|3,75|93,67%|
-| |8|1000 x 1000|377|5,24|65,48%|
-|Paralela (Multihilo)|8|2000 x 2000|3489|5,93|74,10%|
+|Paralela (Multihilo)|8|1000 x 1000|377|5,24|65,48%|
+| |8|2000 x 2000|3489|5,93|74,10%|
 | |8|3000 x 3000|14852|6,34|79,29%|
-| |16|1000 x 1000|250|7,9|49,38%|
-|Paralela (Multihilo)|16|2000 x 2000|2340|8,84|55,24%|
+|Paralela (Multihilo)|16|1000 x 1000|250|7,9|49,38%|
+| |16|2000 x 2000|2340|8,84|55,24%|
 | |16|3000 x 3000|9134|10,31|64,46%|
-| |20|1000 x 1000|220|8,98|44,89%|
-|Paralela (Multihilo)|20|2000 x 2000|2052|10,08|50,39%|
+|Paralela (Multihilo)|20|1000 x 1000|220|8,98|44,89%|
+| |20|2000 x 2000|2052|10,08|50,39%|
 | |20|3000 x 3000|7930|11,88|59,40%|
 
+Ejecución	Hilos	Dimensiones	Tiempo total (ms)	Speed-Up	Eficiencia Paralelismo
+Secuencial	1	1000 x 1000	1975	1	100%
+	1	2000 x 2000	20682	1	100%
+	1	3000 x 3000	94206	1	100%
+Paralela (Multihilo)	2	1000 x 1000	1054	1,87	93,69%
+	2	2000 x 2000	10595	1,95	97,60%
+	2	3000 x 3000	49318	1,91	95,51%
+Paralela (Multihilo)	4	1000 x 1000	574	3,44	86,02%
+	4	2000 x 2000	5649	3,66	91,53%
+	4	3000 x 3000	25144	3,75	93,67%
+Paralela (Multihilo)	8	1000 x 1000	377	5,24	65,48%
+	8	2000 x 2000	3489	5,93	74,10%
+	8	3000 x 3000	14852	6,34	79,29%
+Paralela (Multihilo)	16	1000 x 1000	250	7,9	49,38%
+	16	2000 x 2000	2340	8,84	55,24%
+	16	3000 x 3000	9134	10,31	64,46%
+Paralela (Multihilo)	20	1000 x 1000	220	8,98	44,89%
+	20	2000 x 2000	2052	10,08	50,39%
+	20	3000 x 3000	7930	11,88	59,40%
+![image](https://github.com/Kilamper/matrix-multiplication/assets/73082382/9e7cc5d0-2f67-46a4-aba5-c02e014953a6)
 
-+ **Interfaz Gráfica Intuitiva**: Diseño amigable que facilita la navegación y el uso de la aplicación, presentando un teclado numérico muy sencillo para que cualquier persona pueda utilizarlo.
+
+La tabla anterior muestro los resultados obtenidos de la ejecución del programa de multiplicación de matrices usando tres tamaños distintos de matrices (1000 x 1000, 2000 x 2000 y 3000 x 3000) y alternando el número de hilos empleados en el cálculo del resultado. En esta tabla también se pueden observar el Speed-Up de cada una de las ejecuciones paralelas con respecto a la ejecución secuencial inicial, así como la eficiencia del paralelismo (100% * Speed-Up/Nº hilos).
+
 
 ## Integración con la API
 
