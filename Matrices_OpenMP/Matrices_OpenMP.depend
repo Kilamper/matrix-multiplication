@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1687960253 source:c:\users\-\desktop\clase\2ºulpgc\segundo semestre\arquitectura de computadores\trabajos prácticos\openmp\multiplicación_matrices\matrices_openmp\main.c
+	<omp.h>
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<Windows.h>
+

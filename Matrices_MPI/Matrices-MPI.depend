@@ -1,0 +1,14 @@
+# depslib dependency file v1.0
+1688039732 source:c:\users\-\desktop\clase\2ºulpgc\segundo semestre\arquitectura de computadores\trabajos prácticos\openmp\multiplicación_matrices\matrices-mpi\main.c
+	"mpi.h"
+	<time.h>
+	<stdio.h>
+	<stdlib.h>
+	<Windows.h>
+
+1688400492 source:c:\users\-\desktop\clase\2ºulpgc\segundo semestre\arquitectura de computadores\trabajos prácticos\matrices_mpi\main.c
+	"mpi.h"
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+
