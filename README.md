@@ -47,6 +47,74 @@ El propósito de la función “imprimir_matrices()” es el de imprimir las mat
 
 En el programa principal, “main()”, se selecciona el número de hilos deseado por medio de la variable “threads” y la función “omp_set_num_threads()”. Además, a partir de un contador hardware perteneciente a la librería OpenMP se realiza un conteo del tiempo de ejecución de la operación.
 
-## Integración con la API
+## Implementación en un multicomputador usando OpenMPI y evaluación de prestaciones
 
-La aplicación utiliza una API sencilla y ligera conocida como Fixer para obtener tasas de cambio precisas entre 170 divisas de todo el mundo, actualizadas cada 60 segundos y con datos históricos desde 1999.
+Debido a la falta de interés y de gente para mantenerlo, se suspendió el soporte de OpenMPI en Windows. Por eso, en vez de usar OpenMPI, se ha hecho uso de la librería MS-MPI para realizar la implementación de la multiplicación de matrices en un multicomputador. Microsoft MPI (MS-MPI) es una implementación de Microsoft del estándar de interfaz de paso de mensajes para desarrollar y ejecutar aplicaciones paralelas en la plataforma Windows. Al igual que para OpenMP se ha elegido CodeBlocks como el entorno de desarrollo principal. Aunque el programa debe ser ejecutado desde línea de comandos para poder compartir el trabajo con otro computador.
+
+**Configuración del entorno:** Para poder utilizar la librería MS-MPI en el entorno de desarrollo de CodeBlocks, lo primero es descargar tanto la interfaz MS-MPI (Microsoft Message Passing Interface) desde la página oficial de Microsoft como MinGW y, a continuación, realizar los siguientes ajustes en CodeBlocks para su correcto funcionamiento.
+
+1. Entrar a “Settings”, “Compiler”, en “Selected Compiler”, seleccionar GNU GCC Compiler y en “Linker settings”, “Linker libraries”, añadir los siguientes archivos contenidos en el directorio Lib:
+
+![image](https://github.com/Kilamper/matrix-multiplication/assets/73082382/695d0fe2-d4d5-4379-9dbd-2e6c6e862bd4)
+
+2. En “Search directories”, “Compiler”, añadir el directorio Include:
+
+![image](https://github.com/Kilamper/matrix-multiplication/assets/73082382/1671e62a-cbc0-4119-afb2-50925c797a56)
+
+3. Y por último en “Toolchain executables”, “Compiler’s installation directory”, seleccionar el directorio en el que se encuentra MinGW.
+
+![image](https://github.com/Kilamper/matrix-multiplication/assets/73082382/e3f5bef0-5327-4517-b51c-9258b3e8c3cf)
+
+Al haber terminado los pasos anteriores, el entorno del CodeBlocks debería estar listo para el desarrollo del programa de multiplicación de matrices paralelo con MS-MPI. Para la ejecución en multicomputador se han usado dos ordenadores, uno de sobremesa y otro portátil. El primero es el mismo que se usó en la ejecución del programa paralelo creado con OpenMP, por lo que su procesador es el anteriormente nombrado Intel Core i5 13500, en cambio, el procesador del segundo ordenador, el portátil, es un Intel Core i7 10510U que posee 4 cores y 8 threads.
+
+Los resultados de la evaluación de prestaciones no están disponibles debido a la imposibilidad de ejecutar dicho código en paralelo en ambos computadores. Durante los numerosos intentos de solucionar los problemas hallados a la hora de la ejecución desde el cmd de Windows se han probado distintas configuraciones y arreglos que han ido solucionando algunos de los errores encontrados. Pero el error “mpiexec is unable to connect the smpd service on computer_IP” se ha mantenido y ha sido lo que finalmente ha impedido la finalización de este apartado.
+
+![image](https://github.com/Kilamper/matrix-multiplication/assets/73082382/f4aaf7fe-6ab2-4f87-a1d5-c227db95e26c)
+
+Al igual que en el programa de OpenMP, la función “inicializar_matrices()” se encarga de inicializar las matrices A y B con los valores de las columnas correspondientes, y la matriz C a 0.
+
+![image](https://github.com/Kilamper/matrix-multiplication/assets/73082382/87fb4f0f-5fef-4089-a169-e9d3a399387c)
+
+La función “multiplicar_matrices(A, B, C, rows)” multiplica las matrices A y B, y almacena el resultado en C. Para paralelizar el cálculo se ha utilizado la variable rows para seleccionar el intervalo de filas que le pertenecen a cada proceso.
+
+![image](https://github.com/Kilamper/matrix-multiplication/assets/73082382/891a71bc-3221-4e02-b774-38cc067c516e)
+
+La función “imprimir_matrices()” se encarga de imprimir los elementos de las matrices A, B y C. Al igual que en el caso anterior, se ha incluido una condición para no imprimir matrices muy grandes.
+
+![image](https://github.com/Kilamper/matrix-multiplication/assets/73082382/3a70761b-8884-4557-9c8f-46000e5c0302)
+
+El programa principal “main(argc, argv)” se encarga de controlar la parelización de la multiplicación mediante las funciones de la librerío MS-MPI y de realizar un conteo del tiempo transcurrido entre el inicio y el final de la ejecución de la operación.
+
+## Implementación en un coprocesador de tipo GPU usando CUDA y evaluación de prestaciones
+
+CUDA es una plataforma de computación paralela que permite aprovechar el paralelismo masivo de las GPUs. Para la implementación de la multiplicación de matrices en un coprocesador de tipo GPU se ha optado por no utilizar nuevamente el entorno de desarrollo de CodeBlocks, sino el de Visual Studio, por su fácil implementación con el compilador y la librería CUDA.
+
+**Configuración:** Para poder empezar a trabajar con CUDA, lo primero que hace falta es descargar CUDA Toolkit y los controladores de CUDA compatibles con la tarjeta gráfica que se vaya a utilizar. A diferencia de CodeBlocks, en Visual Studio no hace falta hacer ningún ajuste en especial, ya que al descargar CUDA se configura en el entorno automáticamente.
+
+1. Al crear un nuevo proyecto, bajar hasta ver la opción “CUDA X.X Runtime”, seleccionarla y pulsar en siguiente.
+
+![image](https://github.com/Kilamper/matrix-multiplication/assets/73082382/6bf64e50-d76f-48cd-8ee2-4e48d52ddeab)
+
+Después de terminar de crear el proyecto, ya está todo preparado para comenzar a trabajar con CUDA. El PC utilizado para la implementación en un coprocesador GPU de la multiplicación de matrices es el mismo utilizado para OpenMP, cuya tarjeta gráfica es una Nvidia RTX 3060 que posee 3584 núcleos CUDA.
+
+![image](https://github.com/Kilamper/matrix-multiplication/assets/73082382/8a2b114d-6ff7-4511-a2ec-41ac869c8a6b)
+
+La tabla anterior representa la comparación entre la ejecución secuencial del programa de multiplicación de matrices frente a la ejecución paralalela utilizando la GPU como coprocesador. Como se puede observar, la diferencia es muy amplia entre ambas, con tiempos que pasan de los 94206 milisegundos en matrices de 3000 x 3000 elementos a unos increíbles 0,0623 milisegundos. Esto nos deja unos descomunales valores del Speed-Up, de entre 72800X y 1512000X.
+
+![image](https://github.com/Kilamper/matrix-multiplication/assets/73082382/3c2087ad-1fbc-4b26-b1ab-b53d3987202f)
+
+Al igual que en los dos casos anteriores, la función “multiplicar_matrices(a, b, c, N, M, P)” se encarga de completar la multiplicación de las matrices A y B, y de almacenar su resultado en C. Se utilizan las variables “row” y “col” para determinar la posición actual dentro de la matriz.
+
+![image](https://github.com/Kilamper/matrix-multiplication/assets/73082382/ddab7eaf-580c-4245-8ac6-adc7dd9660e3)
+![image](https://github.com/Kilamper/matrix-multiplication/assets/73082382/a642ab6a-0f64-451e-9887-5514d6bc3bc4)
+![image](https://github.com/Kilamper/matrix-multiplication/assets/73082382/77cffb2a-7087-48c9-9112-77306c0794ad)
+
+En el programa principal “main()” se inicializan las matrices A y B con los valores de las columnas correspondientes, se reparte la ejecución de la operación de multiplicación con el coprocesador de tipo GPU, se imprimen las matrices A, B y C, y se realiza un conteo del tiempo transcurrido entre el inicio y el final de la multiplicación de las matrices.
+
+## Comparación de prestaciones entre multiprocesadores, multicomputadores y GPUs
+
+Al no haber podido obtener los resultados de la ejecución en multicomputadores, solo se realizará la comparación de prestaciones entre la implementación en un mutiprocesador y en un coprocesador de tipo GPU.
+
+![image](https://github.com/Kilamper/matrix-multiplication/assets/73082382/fd6d0322-122e-4eee-860b-4c7f187deaca)
+
+Aunque al utilizar todos los hilos disponibles en el programa desarrollado con OpenMP, el tiempo de ejecución mejora considerablemente, este resultado no se acerca al proporcionado por CUDA. Además, como se puede observar el Speed-Up entre la paralelización usando la GPU frente a la paralelización mediante multiples procesadores es muy grande, estando entre 8110X (en el caso de matrices 1000 x 1000) y 127290X (en matrices 3000 x 3000). Esto se debe a que la GPU posee un número de núcleos ampliamente superior al número de núcleos localizados dentro del procesador.
