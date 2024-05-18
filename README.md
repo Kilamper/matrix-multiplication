@@ -1,4 +1,4 @@
-# Trabajo Práctica 3
+# Trabajo Práctico 3
 ## Programación paralela de la multiplicación de matrices
 
 Este trabajo práctico se centra en la programación paralela de la multiplicación de matrices utilizando diferentes tecnologías paralelas, como OpenMP, OpenMPI y CUDA. El objetivo principal del trabajo es implementar el algoritmo de multiplicación de matrices con números en coma flotante en las librerías paralelas mencionadas, aprovechando la capacidad de paralelismo de un ordenador de sobremesa.
